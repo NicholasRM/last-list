@@ -77,7 +77,7 @@ WSGI_APPLICATION = "lastlist.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "nicholas_shoppingList",
+        "NAME": "nicholas_lastlist",
         "USER": "nicholas_shopListAdmin",
         "PASSWORD": "V@cd6241!",
         "HOST": "192.185.2.183",

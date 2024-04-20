@@ -1,6 +1,3 @@
-from django.db import models
-
-# Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -8,6 +5,7 @@ from django.db import models
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from django.db import models
 
 
 class AuthGroup(models.Model):
@@ -79,6 +77,16 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class City(models.Model):
+    city_id = models.AutoField(primary_key=True)
+    city = models.TextField()
+    state = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'city'
+
+
 class Contains(models.Model):
     list = models.OneToOneField('List', models.DO_NOTHING, primary_key=True)
     item = models.ForeignKey('Item', models.DO_NOTHING)
@@ -148,7 +156,7 @@ class Item(models.Model):
 
 class List(models.Model):
     list_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     name = models.CharField(max_length=30)
     date_created = models.DateField()
 
@@ -178,7 +186,7 @@ class Product(models.Model):
 
 
 class ProductRating(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)
+    user = models.OneToOneField(AuthUser, models.DO_NOTHING, primary_key=True)
     product = models.ForeignKey(Product, models.DO_NOTHING)
     score = models.PositiveIntegerField()
     date_recorded = models.DateField()
@@ -218,6 +226,7 @@ class User(models.Model):
     lname = models.CharField(max_length=20)
     password_hash = models.CharField(max_length=32)
     email = models.CharField(max_length=40)
+    age = models.IntegerField()
 
     class Meta:
         managed = False
@@ -229,8 +238,7 @@ class Vendor(models.Model):
     name = models.TextField()
     street_number = models.PositiveIntegerField()
     street_name = models.TextField()
-    city = models.TextField()
-    state = models.TextField()
+    city_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -238,7 +246,7 @@ class Vendor(models.Model):
 
 
 class VendorRating(models.Model):
-    user = models.OneToOneField(User, models.DO_NOTHING, primary_key=True)
+    user = models.OneToOneField(AuthUser, models.DO_NOTHING, primary_key=True)
     vendor = models.ForeignKey(Vendor, models.DO_NOTHING)
     score = models.PositiveIntegerField()
     date_recorded = models.DateField()

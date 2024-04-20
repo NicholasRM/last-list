@@ -29,3 +29,6 @@ def vendor_search(request):
 
 def vendor_view(request, vendor_id):
     return render(request, "lastlistweb/vendor-view/index.html")
+
+def signup(request):
+    return HttpResponse("<html><body><h1>Change me</h1></body></html>")

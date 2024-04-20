@@ -45,7 +45,6 @@ def generate_item_query(product, price_deviation, vendor, date):
 def clear_tables():
     print("Attempting to clear tables related to item")
     if cnx and cnx.is_connected():
-
         with cnx.cursor() as cursor:
             print("Clearing contains")
             result = cursor.execute("TRUNCATE TABLE contains")
@@ -54,13 +53,21 @@ def clear_tables():
             print("Clearing item")
             result = cursor.execute("TRUNCATE TABLE item")
             print("Clearing product_rating")
-            result = cursor.execute("TRUNCATE TABLE product")
+            result = cursor.execute("TRUNCATE TABLE product_rating")
             print("Clearing vendor_rating")
-            result = cursor.execute("TRUNCATE TABLE product")
+            result = cursor.execute("TRUNCATE TABLE vendor_rating")
             print("Clearing product")
             result = cursor.execute("TRUNCATE TABLE product")
+            print("Clearing price")
+            result = cursor.execute("TRUNCATE TABLE price")
+            print("Clearing quantity")
+            result = cursor.execute("TRUNCATE TABLE quantity")
             print("Clearing vendor")
             result = cursor.execute("TRUNCATE TABLE vendor")
+            print("Clearing city")
+            result = cursor.execute("TRUNCATE TABLE city")
+    
+    print("All important tables have been cleared")
 
 def main():
     global cnx

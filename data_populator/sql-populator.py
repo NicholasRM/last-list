@@ -1,13 +1,16 @@
 import mysql.connector
 import random
 from city_state_dict import state_cities
-cnx = mysql.connector.connect(user='root', password='password123',
+
+CNX = mysql.connector.connect(user='root', password='password123',
                               host='localhost',
                               database='LastList',
                               use_pure=False)
 
 RNG_SEED = 0
 STREET_NUM_MAX = 3000
+
+
 products = ["Coca-Cola"]
 
 product_units = {"Coca-Cola" : "fluid ounces"}
@@ -44,8 +47,8 @@ def generate_item_query(product, price_deviation, vendor, date):
 
 def clear_tables():
     print("Attempting to clear tables related to item")
-    if cnx and cnx.is_connected():
-        with cnx.cursor() as cursor:
+    if CNX and CNX.is_connected():
+        with CNX.cursor() as cursor:
             print("Clearing contains")
             result = cursor.execute("TRUNCATE TABLE contains")
             print("Clearing stock")
@@ -70,7 +73,7 @@ def clear_tables():
     print("All important tables have been cleared")
 
 def main():
-    global cnx
+    global CNX
     response = input("""
              Would you like to use defualt settings?:
              username: root
@@ -92,7 +95,7 @@ def main():
                               use_pure=False)
         
     try:
-        cnx = mysql.connector.connect(user=db_user, password=db_password,
+        CNX = mysql.connector.connect(user=db_user, password=db_password,
                               host=db_host,
                               database=db_name,
                               use_pure=False)

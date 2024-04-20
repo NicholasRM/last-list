@@ -5,8 +5,30 @@
     <title>List View</title>
     <meta charset="utf-8" />
   </head>
+
   <body>
     <h1>List View</h1>
-    <div id="list"></div>
+
+    <div id="lists">
+      <table id="lists-table">
+        <caption>
+          A table displaying all lists that a user has created.
+        </caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamically render rows based on information pulled from database -->
+          <tr>
+            <td>foo</td>
+            <td>bar</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Add pagination features if time permits -->
+    </div>
   </body>
 </html>

@@ -4,8 +4,44 @@
     <title>Item Search</title>
     <meta charset="utf-8" />
   </head>
+
   <body>
     <h1>Item Search</h1>
-    <div id="search"></div>
+
+    <div id="search">
+      <div id="search-bar">
+        <input type="text" name="search" placeholder="Enter search term" />
+        <button type="submit">Search</button>
+      </div>
+
+      <div id="results">
+        <table id="results-table">
+          <caption>
+            A table displaying all items that match the search term.
+          </caption>
+
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Product Brand</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- Dynamically render rows based on information pulled from database -->
+            <tr>
+              <td>foo</td>
+              <td>bar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="error">
+        <p>Error Message Location</p>
+      </div>
+
+      <!-- Add pagination if time permits -->
+    </div>
   </body>
 </html>

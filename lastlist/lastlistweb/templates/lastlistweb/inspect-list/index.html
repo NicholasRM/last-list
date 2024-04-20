@@ -4,8 +4,39 @@
     <title>Inspect List</title>
     <meta charset="utf-8" />
   </head>
+
   <body>
     <h1>Inspect List</h1>
-    <div id="list"></div>
+
+    <div id="items">
+      <table id="items-table">
+        <caption>
+          A table displaying all items that a user has placed into the given
+          list.
+        </caption>
+
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Product Brand</th>
+            <th>Product Size</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Unit Price</th>
+            <th>Date Recorded</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Dynamically render rows based on information pulled from database -->
+          <tr>
+            <td>foo</td>
+            <td>bar</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Add pagination if time permits -->
+    </div>
   </body>
 </html>

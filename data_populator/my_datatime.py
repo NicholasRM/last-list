@@ -73,7 +73,7 @@ class DateTime:
         mo = integer & 0b111
         integer >>= 3
         y = integer
-        return f"'{y:4}-{mo:2}-{d:2} {h:2}:{m:2}:{s:2}'"
+        return f"'{y:04}-{mo:02}-{d:02} {h:02}:{m:02}:{s:02}'"
     
     @staticmethod
     def from_integer(integer):
@@ -133,3 +133,9 @@ class DateTimeGenerator:
         else:
             return dt
         
+if __name__ == "__main__":
+    dt_gen = DateTimeGenerator()
+    dt_gen.min_year = 0
+    
+    for i in range(10000):
+        print(DateTime.int_to_sql(dt_gen.generate_datetime_int()))

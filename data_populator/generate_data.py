@@ -126,5 +126,9 @@ def generate_items_and_stocks():
         
     return result
                     
+def package_and_clean_all_data():
+    
+    ...
+
 if __name__ == "__main__":
     _ = generate_items_and_stocks()

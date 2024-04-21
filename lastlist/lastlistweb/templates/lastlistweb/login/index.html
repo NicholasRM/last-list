@@ -11,14 +11,21 @@
 
     <div id="login">
       <div id="text-entries">
-        <input type="text" name="username" placeholder="username" />
-        <input type="password" name="password" placeholder="password" />
+        <form id="login-form" action="" method="POST">
+          <input type="text" name="username" placeholder="username" />
+          <input type="password" name="password" placeholder="password" />
+
+          <button type="submit">Login</button>
+        </form>
       </div>
 
-      <div id="buttons">
-        <button type="submit">Login</button>
-        <button type="button">Register</button>
-      </div>
+      <button
+        type="submit"
+        id="signup-button"
+        onclick="location.href='/signup'"
+      >
+        Sign Up
+      </button>
 
       <div id="error">
         <p>Error Message Location</p>

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login as signin, logout
 from django.contrib import messages
 from .forms import SignUpForm
 from .models import List, Contains, Item, Vendor, Stock
-
+from datetime import datetime
 
 # Create your views here.
 def login(request):
@@ -72,3 +72,35 @@ def signup(request):
         return HttpResponse("<html><body><h1>Change me</h1></body></html>")
     
     return HttpResponse("<html><body><h1>Change me</h1></body></html>")
+
+def signout(request):
+    logout(request)
+    redirect('login')
+
+def add_list_item(request, list_id, item_id):
+    lists = List.objects.filter(user_id=request.user.id, list_id=list_id)
+    if not lists:
+        return redirect('list_view')
+    entry = Contains.objects.create(list=list_id, item=item_id, is_replacement=0)
+    entry.save()
+    return redirect('list_view')
+
+def remove_list_item(request, list_id, item_id):
+    lists = List.objects.filter(user_id=request.user.id, list_id=list_id)
+    if not lists:
+        return redirect('list_view')
+    Contains.objects.get(list=list_id, item=item_id).delete()
+    return redirect('list_view')
+
+def create_list(request, name):
+    l = List.objects.create(user=request.user.id, date_created=datetime.now().date(), name=name)
+    l.save()
+    return redirect('list_view')
+
+def delete_list(request, list_id):
+    l = List.objects.get(user=request.user.id, list=list_id)
+    if l is not None:
+        redirect('list_view')
+    l.delete()
+    return redirect('list_view')
+    

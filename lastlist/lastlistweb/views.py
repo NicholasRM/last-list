@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Create your views here.
 def login(request):
-    if request.metthod == 'POST':
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         
@@ -30,17 +30,20 @@ def list_view(request):
 
 
 def inspect_list(request, list_id):
-    lists = List.objects.filter(user_id=request.user.id, list_id=list_id)
+    lists = List.objects.get(user_id=request.user.id, list_id=list_id)
     if not lists:
         pass
         # Invalid access, redirect to user list view, display a message
     items = Contains.objects.get(list_id=list_id)
     return render(request, "lastlistweb/inspect-list/index.html", {'items':items})
 
-
 def item_search(request):
+    if request.method == 'POST':
+        prod_name = request.POST['prod_name']
+        items = Item.objects.filter(product__name__icontains=prod_name)
+        return render(request, "lastlistweb/item-search/index.html", {"items":items})
+        
     return render(request, "lastlistweb/item-search/index.html")
-
 
 def item_view(request, item_id):
     item = Item.objects.get(pk=item_id)
@@ -48,6 +51,10 @@ def item_view(request, item_id):
 
 
 def vendor_search(request):
+    if request.method == 'POST':
+        vend_name = request.POST['vend_name']
+        vendors = Vendor.objects.filter(name__icontains=vend_name)
+        return render(request, "lastlistweb/vendor-search/index.html", {"vendors":vendors})
     return render(request, "lastlistweb/vendor-search/index.html")
 
 

@@ -10,14 +10,15 @@
     <h1>List View</h1>
 
     <div id="lists">
+      {% for list in lists %}
       <table id="lists-table">
         <caption>
           A table displaying all lists that a user has created.
         </caption>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Date Created</th>
+            <th> {{ list.name }} </th>
+            <th>{{ list.date_created }}</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
           </tr>
         </tbody>
       </table>
+      {% endfor %}
       <!-- Add pagination features if time permits -->
     </div>
   </body>

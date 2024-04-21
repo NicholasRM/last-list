@@ -4,7 +4,9 @@ from city_state_dict import state_cities
 RNG_SEED = 0
 STREET_NUM_MAX = 3000
 
-vendor_names = ["Walmart", "Costco Wholesale", "Target", "Family Dollar", "Stop & Shop"]
+vendor_names = ["Walmart", "Target", "Family Dollar", "Stop & Shop"]
+
+included_states = ["Rhode Island"]
 
 def generate_vendors():
     
@@ -14,7 +16,7 @@ def generate_vendors():
     
     city_id = 1
     vendor_id = 1
-    for state in ["Rhode Island", "Connecticut", "Massachusetts"]:
+    for state in included_states:
         for city in state_cities[state]:
             result[1].append({
                 "city_id":city_id,

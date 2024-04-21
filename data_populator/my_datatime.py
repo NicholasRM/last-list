@@ -58,7 +58,7 @@ class DateTime:
         h = self.hour
         m = self.minute
         s = self.second
-        return f"'{y:4}-{mo:2}-{d:2} {h:2}:{m:2}:{s:2}'"
+        return f"'{y:04}-{mo:02}-{d:02} {h:02}:{m:02}:{s:02}'"
     
     @staticmethod
     def int_to_sql(integer):

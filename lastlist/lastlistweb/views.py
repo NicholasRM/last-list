@@ -54,7 +54,7 @@ def vendor_search(request):
 def vendor_view(request, vendor_id):
     vendor = Vendor.objects.get(pk=vendor_id)
     inventory = Stock.objects.filter(vendor=vendor_id)
-    return render(request, "lastlistweb/vendor-view/index.html")
+    return render(request, "lastlistweb/vendor-view/index.html", {'vendor': vendor, 'inventory': inventory})
 
 def signup(request):
     if request.method == 'POST':

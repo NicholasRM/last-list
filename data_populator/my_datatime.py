@@ -61,6 +61,21 @@ class DateTime:
         return f"'{y:4}-{mo:2}-{d:2} {h:2}:{m:2}:{s:2}'"
     
     @staticmethod
+    def int_to_sql(integer):
+        s = integer & 0b11111
+        integer >>= 5
+        m = integer & 0b11111
+        integer >>= 5
+        h = integer & 0b1111
+        integer >>= 4
+        d = integer & 0b1111
+        integer >>= 4
+        mo = integer & 0b111
+        integer >>= 3
+        y = integer
+        return f"'{y:4}-{mo:2}-{d:2} {h:2}:{m:2}:{s:2}'"
+    
+    @staticmethod
     def from_integer(integer):
         dt = DateTime()
         dt.set_integer(integer)
@@ -72,15 +87,15 @@ class DateTimeGenerator:
         self.max_day = 28
         self.min_month = 1
         self.max_month = 12
-        self.min_year = 2000
-        self.max_year = 2024
+        self.min_year = 2021
+        self.max_year = 2023
         self.min_hour = 9
         self.max_hour = 22
         self.min_minute = 0
         self.max_minute = 59
         self.min_second = 0
         self.max_second = 59
-        self.max_datetime = DateTime(2024,4,20,23,59,59)
+        self.max_datetime = DateTime(2023,12,28,23,59,59)
         
     def generate_datetime(self):
         dt = DateTime()
@@ -93,6 +108,28 @@ class DateTimeGenerator:
         
         if int(dt) > int(self.max_datetime):
             return self.max_datetime
+        else:
+            return dt
+        
+    def generate_datetime_int(self):
+        second = randint(self.min_second, self.max_second)
+        minute = randint(self.min_minute, self.max_minute)
+        hour = randint(self.min_hour, self.max_hour)
+        day = randint(self.min_day, self.max_day)
+        month = randint(self.min_month, self.max_month)
+        year = randint(self.min_year, self.max_year)
+        
+        dt = 0
+        dt |= second
+        dt |= minute << 5
+        dt |= hour << 10
+        dt |= day << 14
+        dt |= month << 18
+        dt |= year << 21
+        
+        int_max = int(self.max_datetime)
+        if dt > int_max:
+            return int_max
         else:
             return dt
         

@@ -1,5 +1,5 @@
 import mysql.connector
-import random
+from random import seed, randint, uniform
 from city_state_dict import state_cities
 
 CNX = mysql.connector.connect(user='root', password='password123',
@@ -8,10 +8,15 @@ CNX = mysql.connector.connect(user='root', password='password123',
                               use_pure=False)
 
 RNG_SEED = 0
-STREET_NUM_MAX = 3000
+STREET_NUM_MAX = 3000        
 
+brands = ["Brand A",
+          "Brand B",
+          "Brand C",
+          "Brand D",
+          "Brand E"]
 
-products = ["Coca-Cola"]
+products = ["Coca-Cola", "Orange", "Orange Juice", "Apple", "Apple Juice", "Lemonade", "Banana"]
 
 product_units = {"Coca-Cola" : "fluid ounces"}
 
@@ -29,17 +34,44 @@ vendor_markups = {"Walmart": 1.3,
                   "Family Dollar": 1,
                   "Stop & Shop": 1.4}
 
-def generate_vendors():
-    for state in state_cities.keys():
-        for city in state_cities[state]:
-            
-            ...
-    ...
+max_vendor_id = 0
+max_city_id = 0
+max_item_id = 0
 
-def generate_item_query(product, price_deviation, vendor, date):
+def generate_vendors():
+    city_id = 1
+    vendor_id = 1
+    if CNX and CNX.is_connected():
+        with CNX.cursor() as cursor:
+            for state in state_cities.keys():
+                for city in state_cities[state]:
+                    result = cursor.execute(f"""
+                        INSERT INTO city(city_id, city, state) VALUES
+                        ('{city_id}', '{city}','{state}');
+                    """)
+                    for vendor in vendor_names:
+                        street_num = randint(1, STREET_NUM_MAX)
+                        street_name = city
+                        if randint(0,1):
+                            street_name += " Ave"
+                        else:
+                            street_name += " St"
+                        result = cursor.execute(f"""
+                            INSERT INTO vendor(vendor_id, name, street_number, street_name, city_id) VALUES
+                            ({vendor_id}, '{vendor}', {street_num}, '{street_name}', {city_id});
+                        """)
+                        vendor_id += 1 
+                    city_id += 1
+    
+    global max_city_id
+    max_city_id = city_id
+    global max_vendor_id
+    max_vendor_id = vendor_id
+           
+def generate_item(product, price_deviation, vendor, date):
     price = base_unit_prices[product]
-    price *= units_per_container[random.randint(0, len(units_per_container) - 1)]
-    price *= containers_per_pack[random.randint(0, len(containers_per_pack) - 1)]
+    price *= units_per_container[randint(0, len(units_per_container) - 1)]
+    price *= containers_per_pack[randint(0, len(containers_per_pack) - 1)]
     price *= vendor_markups[vendor]
     price *= price_deviation
     price = round(price,2)
@@ -126,5 +158,5 @@ Proceed?(y/n):""")
     except:
         print("An error occured while trying to establish MySQL connection")
         
-    random.seed(RNG_SEED)
+    seed(RNG_SEED)
     

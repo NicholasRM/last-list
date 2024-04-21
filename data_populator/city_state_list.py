@@ -5329,7 +5329,7 @@ cities_and_states = [
 {'city': 'Torrington', 'state': 'Connecticut'},
 {'city': 'Torrington', 'state': 'Connecticut'},
 {'city': 'Totowa', 'state': 'New Jersey'},
-{'city': "Town 'n' Country", 'state': 'Florida'},
+{'city': "Town n Country", 'state': 'Florida'},
 {'city': 'Town and Country', 'state': 'Missouri'},
 {'city': 'Townsend', 'state': 'Massachusetts'},
 {'city': 'Towson', 'state': 'Maryland'},

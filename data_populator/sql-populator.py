@@ -76,7 +76,7 @@ def populate_stock(stocks):
                     for item in stock:
                         result = cursor.execute(f"""
                                     INSERT INTO stock(vendor_id, item_id, status) VALUES
-                                    ({v_id}, {item[1]}, {item[2]});
+                                    ({v_id + 1}, {item[0]}, {item[1]});
                                 """)
 def clear_tables():
     print("Attempting to clear tables related to item")

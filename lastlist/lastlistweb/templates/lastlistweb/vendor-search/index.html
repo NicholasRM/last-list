@@ -33,7 +33,7 @@
           <tbody>
             <!-- Dynamically render rows based on information pulled from database -->
             <tr>
-              <td>{{ v.name }}</td>
+              <td><a class="navlink" href={% url "lastlistweb:vendorid" v.vendor_id %}>{{ v.name }}</td>
               <td>{{ v.street_number }} {{ v.street_name }}</td>
             </tr>
           </tbody>

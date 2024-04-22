@@ -238,7 +238,7 @@ class Vendor(models.Model):
     name = models.TextField()
     street_number = models.PositiveIntegerField()
     street_name = models.TextField()
-    city_id = models.IntegerField()
+    city = models.ForeignKey(City, models.DO_NOTHING)
 
     class Meta:
         managed = False

@@ -5,10 +5,37 @@
     <title>Vendor View</title>
   </head>
   <body>
-    <h1>Vendor View</h1>
+    <h1>
+      {{ vendor.name }}<br/>
+      {{ vendor.street_number }} {{ vendor.street_name }}, {{ vendor.city.city }}, {{ vendor.city.state }}
+    </h1>
 
     <div id="vendor">
-      <p>Vendor information will be displayed here.</p>
+      <table id="results-table">
+        <caption>
+          
+        </caption>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>In Stock?</th>
+          </tr>
+        </thead>
+        {% for i in inventory %}
+        <tbody>
+          <tr>
+            <td> <a class="navlink" href={% url "lastlistweb:itemid" i.item.item_id %}> {{ i.item.product.name }} </a></td>
+            <td> {{ i.item.price.price }} </td>
+            {% if i.status %}
+            <td> Yes </td>
+            {% else %}
+            <td> No </td>
+            {% endif %}
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
     </div>
   </body>
 </html>

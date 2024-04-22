@@ -54,7 +54,7 @@ def generate_products ():
     product_entries = []
     for food in foods.keys():
         for brand in range(brand_count):
-            if randint(1,5) < 4:
+            if randint(1,5) < 5:
                 product_entries.append([food, brand])
     
     return product_entries
@@ -79,8 +79,7 @@ def generate_items_and_stocks():
                     if pack_size == 1 or randint(1,5) < 4:
                         pack_markup = package_markups[pack_size]
                         quantities.append(
-                            [quantity_id,
-                            foods[p[0]]["serving_size"]*uniform(
+                            [foods[p[0]]["serving_size"]*uniform(
                                 AMOUNT_DEVIATION_LOWER,
                                 AMOUNT_DEVIATION_UPPER
                                 ),
@@ -90,7 +89,7 @@ def generate_items_and_stocks():
                         quantity_id += 1
                         for _ in range(randint(3,7)):
                             dt = dt_gen.generate_datetime_int()
-                            inflation = ((dt >> 18) - (dt_gen.min_year << 3))*monthly_inlfation
+                            inflation = 1 + ((dt >> 18) - (dt_gen.min_year << 3))*monthly_inlfation
                             price = foods[p[0]]["price"]
                             
                             price *= vendor_markups[v["vendor"]]
@@ -99,18 +98,19 @@ def generate_items_and_stocks():
                             price *= v_dev
                             price *= inflation
                             price *= pack_size
-                            prices.append([price_id, round(price,2), DateTime.int_to_sql(dt)])
-                            price_id += 1
+                            prices.append([round(price,2), DateTime.int_to_sql(dt)])
+                            
                             
                             items.append(
-                                [item_id,
+                                [
                                     p_id,
                                     quantity_id,
-                                    price_id]
+                                    price_id
+                                ]
                             )
-                            item_id += 1
-                            
                             stock.append(item_id)
+                            item_id += 1
+                            price_id += 1
         stocks.append(stock)
                         
     result = {
@@ -126,9 +126,14 @@ def generate_items_and_stocks():
         
     return result
                     
-def package_and_clean_all_data():
+def package_all_data():
+    result = generate_items_and_stocks()
+    result["vendors"] = vendors
+    result["cities"] =  cities
     
+    return result
     ...
 
 if __name__ == "__main__":
-    _ = generate_items_and_stocks()
+    result = package_all_data()
+    a = 1

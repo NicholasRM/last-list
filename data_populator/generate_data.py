@@ -86,7 +86,6 @@ def generate_items_and_stocks():
                             "grams",
                             pack_size
                                             ])
-                        quantity_id += 1
                         highest_date = 0
                         highest_index = 0
                         for _ in range(randint(3,7)):
@@ -94,7 +93,7 @@ def generate_items_and_stocks():
                             if dt > highest_date:
                                 highest_date = dt
                                 highest_index = len(stock) - 1
-                            inflation = 1 + ((dt >> 18) - (dt_gen.min_year << 3))*monthly_inlfation
+                            inflation = 1 + ((dt >> 22) - (dt_gen.min_year << 4))*monthly_inlfation
                             price = foods[p[0]]["price"]
                             
                             price *= vendor_markups[v["vendor"]]
@@ -108,7 +107,7 @@ def generate_items_and_stocks():
                             
                             items.append(
                                 [
-                                    p_id,
+                                    p_id + 1,
                                     quantity_id,
                                     price_id
                                 ]
@@ -120,6 +119,7 @@ def generate_items_and_stocks():
                         stock[highest_index][1] = 1
                         highest_date = 0
                         highest_index = 0
+                        quantity_id += 1
         
         stocks.append(stock)
                         

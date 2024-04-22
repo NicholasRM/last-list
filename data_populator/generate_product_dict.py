@@ -6,8 +6,8 @@ SEED = 0
 def generate_foods():
     
     seed(SEED)
-    LOWER_PRICE = 3
-    UPPER_PRICE = 7
+    LOWER_PRICE = 2
+    UPPER_PRICE = 6
     
     result = dict()
 

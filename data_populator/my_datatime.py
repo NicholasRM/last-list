@@ -18,20 +18,20 @@ class DateTime:
     def __int__ (self):
         #BIT LAYOUT
         #y = year (infinite bits)
-        #M = month (3 bits)
-        #d = day (4 bits)
-        #h = hours (4 bits)
-        #m = minutes (5 bits)
-        #s = seconds (5 bits)
+        #M = month (4 bits)
+        #d = day (5 bits)
+        #h = hours (5 bits)
+        #m = minutes (6 bits)
+        #s = seconds (6 bits)
         #y......yMMMddddhhhhmmmmmsssss
-
+        
         datetime = 0
         datetime |= self.second
-        datetime |= self.minute << 5
-        datetime |= self.hour << 10
-        datetime |= self.day << 14
-        datetime |= self.month << 18
-        datetime |= self.year << 21
+        datetime |= self.minute << 6
+        datetime |= self.hour << 12
+        datetime |= self.day << 17
+        datetime |= self.month << 22
+        datetime |= self.year << 26
         
         return datetime
     
@@ -39,16 +39,24 @@ class DateTime:
         return self.__int__()
     
     def set_integer(self, integer):
-        self.second = integer & 0b11111
+        #BIT LAYOUT
+        #y = year (infinite bits)
+        #M = month (4 bits)
+        #d = day (5 bits)
+        #h = hours (5 bits)
+        #m = minutes (6 bits)
+        #s = seconds (6 bits)
+        #y......yMMMddddhhhhmmmmmsssss
+        self.second = integer & 0b111111
+        integer >>= 6
+        self.minute = integer & 0b111111
+        integer >>= 6
+        self.hour = integer & 0b11111
         integer >>= 5
-        self.minute = integer & 0b11111
+        self.day = integer & 0b11111
         integer >>= 5
-        self.hour = integer & 0b1111
+        self.month = integer & 0b1111
         integer >>= 4
-        self.day = integer & 0b1111
-        integer >>= 4
-        self.month = integer & 0b111
-        integer >>= 3
         self.year = integer
     
     def sql_format(self):
@@ -62,16 +70,16 @@ class DateTime:
     
     @staticmethod
     def int_to_sql(integer):
-        s = integer & 0b11111
+        s = integer & 0b111111
+        integer >>= 6
+        m = integer & 0b111111
+        integer >>= 6
+        h = integer & 0b11111
         integer >>= 5
-        m = integer & 0b11111
+        d = integer & 0b11111
         integer >>= 5
-        h = integer & 0b1111
+        mo = integer & 0b1111
         integer >>= 4
-        d = integer & 0b1111
-        integer >>= 4
-        mo = integer & 0b111
-        integer >>= 3
         y = integer
         return f"{y:04}-{mo:02}-{d:02} {h:02}:{m:02}:{s:02}"
     
@@ -121,11 +129,11 @@ class DateTimeGenerator:
         
         dt = 0
         dt |= second
-        dt |= minute << 5
-        dt |= hour << 10
-        dt |= day << 14
-        dt |= month << 18
-        dt |= year << 21
+        dt |= minute << 6
+        dt |= hour << 12
+        dt |= day << 17
+        dt |= month << 22
+        dt |= year << 26
         
         int_max = int(self.max_datetime)
         if dt > int_max:
@@ -139,3 +147,4 @@ if __name__ == "__main__":
     
     for i in range(10000):
         print(DateTime.int_to_sql(dt_gen.generate_datetime_int()))
+        print(DateTime.int_to_sql(int(dt_gen.generate_datetime())))

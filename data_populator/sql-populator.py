@@ -1,49 +1,12 @@
 import mysql.connector
-from random import seed, randint, uniform
-from city_state_dict import state_cities
-from generate_product_dict import generate_foods
-from data_populator.generate_vendor_dicts import generate_vendors
+from generate_data import package_all_data
 
-CNX = mysql.connector.connect(user='root', password='password123',
-                              host='localhost',
-                              database='LastList',
-                              use_pure=False)
+CNX = None
 
-RNG_SEED = 0
-STREET_NUM_MAX = 3000
-
-monthly_inlfation = 0.003
-
-package_servings = [1,4,6,8,12]
-package_markups = [1,0.9,0.8,0.7]
-
-brands = ["Brand A",
-          "Brand B",
-          "Brand C",
-          "Brand D",
-          "Brand E"]
-
-vendors, cities = generate_vendors()
-
-brand_markups = [0.8,0.9,1.0,1.1,1.2]
-BRAND_DEVIATION_LOWER = 0.7
-BRAND_DEVIATION_UPPER = 1.3
-
-products = generate_foods()
-
-vendor_names = ["Walmart", "Costco Wholesale", "Target", "Family Dollar", "Stop & Shop"]
-
-vendor_markups = {"Walmart": 1.3,
-                  "Costco Wholesale": 1.2,
-                  "Target": 1.2,
-                  "Family Dollar": 1,
-                  "Stop & Shop": 1.4}
-
-max_item_id = 0
-
-def populate_vendor_and_city():
+def populate_vendor_and_city(cities, vendors):
     if CNX and CNX.is_connected():
         with CNX.cursor() as cursor:
+            print("Populating city")
             for c in cities:
                 city_id = c["city_id"]
                 city = c["city"]
@@ -52,6 +15,7 @@ def populate_vendor_and_city():
                             INSERT INTO city(city_id, city, state) VALUES
                             ('{city_id}', '{city}','{state}');
                         """)
+            print("Populating vendor")
             for v in vendors:
                 vendor_id = v["vendor_id"]   
                 vendor = v["vendor"]
@@ -64,30 +28,80 @@ def populate_vendor_and_city():
                             ({vendor_id}, '{vendor}', {street_num}, '{street_name}', {city_id});
                         """)
 
+def populate_product(products):
+    print("Populating product")
+    if CNX and CNX.is_connected():
+        with CNX.cursor() as cursor:
+            for p_id, p in enumerate(products):
+                result = cursor.execute(f"""
+                            INSERT INTO product(product_id, name, brand) VALUES
+                            ({p_id + 1}, '{p[0]}', '{p[1]}');
+                        """)
+
+def populate_price(prices):
+    print("Populating price")
+    if CNX and CNX.is_connected():
+        with CNX.cursor() as cursor:
+            for p_id, p in enumerate(prices):
+                result = cursor.execute(f"""
+                            INSERT INTO price(price_id, price, date_recorded) VALUES
+                            ({p_id + 1}, {p[0]}, '{p[1]}');
+                        """)
+                
+def populate_quantity(quantities):
+    print("Populating quantity")
+    if CNX and CNX.is_connected():
+        with CNX.cursor() as cursor:
+            for q_id, q in enumerate(quantities):
+                result = cursor.execute(f"""
+                            INSERT INTO quantity(quantity_id, measurement, unit, count) VALUES
+                            ({q_id + 1}, {q[0]}, '{q[1]}', {q[2]});
+                        """)
+                
+def populate_item(items):
+    print("Populating item")
+    if CNX and CNX.is_connected():
+            with CNX.cursor() as cursor:
+                for i_id, i in enumerate(items):
+                    result = cursor.execute(f"""
+                                INSERT INTO item(item_id, product_id, quantity_id, price_id) VALUES
+                                ({i_id + 1}, {i[0]}, {i[1]}, {i[2]});
+                            """)
+                    
+def populate_stock(stocks):
+    print("Populating stock")
+    if CNX and CNX.is_connected():
+            with CNX.cursor() as cursor:
+                for v_id, stock in enumerate(stocks):
+                    for item in stock:
+                        result = cursor.execute(f"""
+                                    INSERT INTO stock(vendor_id, item_id, status) VALUES
+                                    ({v_id}, {item[1]}, {item[2]});
+                                """)
 def clear_tables():
     print("Attempting to clear tables related to item")
     if CNX and CNX.is_connected():
         with CNX.cursor() as cursor:
             print("Clearing contains")
-            result = cursor.execute("TRUNCATE TABLE contains")
+            result = cursor.execute("DELETE FROM contains WHERE 1=1")
             print("Clearing stock")
-            result = cursor.execute("TRUNCATE TABLE stock")
+            result = cursor.execute("DELETE FROM stock WHERE 1=1")
             print("Clearing item")
-            result = cursor.execute("TRUNCATE TABLE item")
+            result = cursor.execute("DELETE FROM item WHERE 1=1")
             print("Clearing product_rating")
-            result = cursor.execute("TRUNCATE TABLE product_rating")
+            result = cursor.execute("DELETE FROM product_rating WHERE 1=1")
             print("Clearing vendor_rating")
-            result = cursor.execute("TRUNCATE TABLE vendor_rating")
+            result = cursor.execute("DELETE FROM vendor_rating WHERE 1=1")
             print("Clearing product")
-            result = cursor.execute("TRUNCATE TABLE product")
+            result = cursor.execute("DELETE FROM product WHERE 1=1")
             print("Clearing price")
-            result = cursor.execute("TRUNCATE TABLE price")
+            result = cursor.execute("DELETE FROM price WHERE 1=1")
             print("Clearing quantity")
-            result = cursor.execute("TRUNCATE TABLE quantity")
+            result = cursor.execute("DELETE FROM quantity WHERE 1=1")
             print("Clearing vendor")
-            result = cursor.execute("TRUNCATE TABLE vendor")
+            result = cursor.execute("DELETE FROM vendor WHERE 1=1")
             print("Clearing city")
-            result = cursor.execute("TRUNCATE TABLE city")
+            result = cursor.execute("DELETE FROM city WHERE 1=1")
     
     print("All important tables have been cleared")
 
@@ -102,18 +116,21 @@ def main():
              
              (y/n):
              """)
-    if response != "y" or response != "Y":
+    
+    flag = response == 'y'
+    flag = flag or response == 'Y'
+    
+    if not flag:
         db_name = input("Enter name of LastList database:\n")
         db_host = input("Enter host:\n")
         db_user = input("Enter username:\n")
         db_password = input("Enter password:\n")
     else:
-        mysql.connector.connect(user='root', password='password123',
-                              host='localhost',
-                              database='LastList',
-                              use_pure=False)
-        
-    try:
+        db_name = 'LastList'
+        db_host = 'localhost'
+        db_user = 'root'
+        db_password = 'password123'
+
         CNX = mysql.connector.connect(user=db_user, password=db_password,
                               host=db_host,
                               database=db_name,
@@ -141,10 +158,16 @@ city
 Proceed?(y/n):""")
         if response == "y" or response == "Y":
             clear_tables()
-            
-        
-    except:
-        print("An error occured while trying to establish MySQL connection")
-        
-    seed(RNG_SEED)
-    
+            print("Generating data. This will take a while")
+            dicts = package_all_data()
+            populate_vendor_and_city(dicts["city"], dicts["vendor"])
+            populate_product(dicts["product"])
+            populate_price(dicts["price"])
+            populate_quantity(dicts["quantity"])
+            populate_item(dicts["item"])
+            populate_stock(dicts["stock"])
+            print("####################")
+            print("Population complete!")
+            print("####################")
+if __name__ == "__main__":
+    main()

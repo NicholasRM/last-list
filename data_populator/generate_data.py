@@ -79,16 +79,21 @@ def generate_items_and_stocks():
                     if pack_size == 1 or randint(1,5) < 4:
                         pack_markup = package_markups[pack_size]
                         quantities.append(
-                            [foods[p[0]]["serving_size"]*uniform(
+                            [round(foods[p[0]]["serving_size"]*uniform(
                                 AMOUNT_DEVIATION_LOWER,
                                 AMOUNT_DEVIATION_UPPER
-                                ),
+                                ),2),
                             "grams",
                             pack_size
                                             ])
                         quantity_id += 1
+                        highest_date = 0
+                        highest_index = 0
                         for _ in range(randint(3,7)):
                             dt = dt_gen.generate_datetime_int()
+                            if dt > highest_date:
+                                highest_date = dt
+                                highest_index = len(stock) - 1
                             inflation = 1 + ((dt >> 18) - (dt_gen.min_year << 3))*monthly_inlfation
                             price = foods[p[0]]["price"]
                             
@@ -108,9 +113,14 @@ def generate_items_and_stocks():
                                     price_id
                                 ]
                             )
-                            stock.append(item_id)
+                            stock.append([item_id,0])
                             item_id += 1
                             price_id += 1
+                            
+                        stock[highest_index][1] = 1
+                        highest_date = 0
+                        highest_index = 0
+        
         stocks.append(stock)
                         
     result = {

@@ -128,8 +128,8 @@ def generate_items_and_stocks():
                     
 def package_all_data():
     result = generate_items_and_stocks()
-    result["vendors"] = vendors
-    result["cities"] =  cities
+    result["vendor"] = vendors
+    result["city"] =  cities
     
     return result
     ...

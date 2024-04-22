@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import List, Contains, Item, Vendor, Stock, AuthUser
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm
 
 
 # Create your views here.

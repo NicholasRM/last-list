@@ -25,7 +25,7 @@
     <h1>Last List Login</h1>
     <div id="login">
       <div id="text-entries">
-        <form id="login-form" action="/" method="POST">
+        <form id="login-form" action={% url "lastlistweb:signin" %} method="POST">
           {% csrf_token %}
           <form>
             <input type="text" name="username" placeholder="username" />

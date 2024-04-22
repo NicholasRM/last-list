@@ -24,32 +24,25 @@ def list_view(request):
 
 
 def inspect_list(request, list_id):
-    pass
-    lists = List.objects.get(user=request.user.id, pk=list_id)
-    if not lists:
-        redirect('list_view')
-    items = Contains.objects.get(list_id=list_id)
+    items = Contains.objects.filter(list=list_id)
     return render(request, "lastlistweb/inspect-list/index.html", {'items':items})
 
 def item_search(request):
-    pass
     if request.method == 'POST':
-        prod_name = request.POST['prod_name']
+        prod_name = request.POST['search']
         items = Item.objects.filter(product__name__icontains=prod_name)
         return render(request, "lastlistweb/item-search/index.html", {"items":items})
         
     return render(request, "lastlistweb/item-search/index.html")
 
 def item_view(request, item_id):
-    pass
     item = Item.objects.get(pk=item_id)
     return render(request, "lastlistweb/item-view/index.html", {'item':item})
 
 
 def vendor_search(request):
-    pass
     if request.method == 'POST':
-        vend_name = request.POST['vend_name']
+        vend_name = request.POST['search']
         vendors = Vendor.objects.filter(name__icontains=vend_name)
         return render(request, "lastlistweb/vendor-search/index.html", {"vendors":vendors})
     return render(request, "lastlistweb/vendor-search/index.html")

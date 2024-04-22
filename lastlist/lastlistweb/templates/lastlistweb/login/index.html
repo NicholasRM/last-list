@@ -7,18 +7,34 @@
   </head>
 
   <body>
+    {% if user.is_authenticated %}
+      <h1> Welcome, {{ user.first_name }}</h1>
+      <button type="submit" id="signout-button" onclick="location.href='/signout'">
+        Sign Out
+      </button>
+      <button type="submit" id="lists-button" onclick="location.href='/lists'">
+        View My Lists
+      </button>
+      <button type="submit" id="items-button" onclick="location.href='/items'">
+        Search Items
+      </button>
+      <button type="submit" id="vendors-button" onclick="location.href='/vendors'">
+        Search Vendors
+      </button>
+    {% else %}
     <h1>Last List Login</h1>
-
     <div id="login">
       <div id="text-entries">
-        <form id="login-form" action="" method="POST">
-          <input type="text" name="username" placeholder="username" />
-          <input type="password" name="password" placeholder="password" />
+        <form id="login-form" action={% url "lastlistweb:signin" %} method="POST">
+          {% csrf_token %}
+          <form>
+            <input type="text" name="username" placeholder="username" />
+            <input type="password" name="password" placeholder="password" />
 
-          <button type="submit">Login</button>
+            <button type="submit">Login</button>
+          </form>
         </form>
       </div>
-
       <button
         type="submit"
         id="signup-button"
@@ -26,7 +42,7 @@
       >
         Sign Up
       </button>
-
+    {% endif %}
       <div id="error">
         <p>Error Message Location</p>
       </div>

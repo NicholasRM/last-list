@@ -8,9 +8,37 @@
 
   <body>
     <h1>Item View</h1>
-
     <div id="item">
-      <p>Item information will be displayed here.</p>
+    {% if item %}
+      <table id="item-table">
+        <caption> All of an item's information </caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Recorded Price</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <!-- Dynamically render rows based on information pulled from database -->
+          <tr>
+            <td>{{ item.product.name }}</a></td>
+            <td>{{ item.product.brand }}</td>
+            <td>{{ item.price.price }}</td>
+            <td>{{ item.price.date_recorded }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Add item to... </h3>
+      {% for l in lists %}
+        <a class="nav-link" href={% url "lastlistweb:addlistitem" l.list_id item.item_id %}> {{ l.name }} </a>
+        <br />
+      {% endfor %}
+    {% else %}
+      <p>Looks like that item doesn't exist yet...</p>
+    {% endif %}
     </div>
   </body>
 </html>

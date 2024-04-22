@@ -10,35 +10,44 @@
 
     <div id="search">
       <div id="search-bar">
-        <form id="item-search-form" action="" method="POST">
-          <input type="text" name="search" placeholder="Enter search term" />
-          <button type="submit">Search</button>
+        <form id="item-search-form" action={% url "lastlistweb:items" %} method="POST">
+          {% csrf_token %}
+          <form>
+            <input type="text" name="search" placeholder="Enter search term" />
+            <button type="submit">Search</button>
+          </form>
         </form>
       </div>
 
-      <div id="results">
-        <table id="results-table">
-          <caption>
-            A table displaying all items that match the search term.
-          </caption>
-
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Product Brand</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <!-- Dynamically render rows based on information pulled from database -->
-            <tr>
-              <td>foo</td>
-              <td>bar</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
+      {% if items %}
+        <div id="results">
+          <table id="results-table">
+            <caption>
+              A table displaying all items that match the search term.
+            </caption>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Recorded Price</th>
+              </tr>
+            </thead>
+            
+            {% for i in items %}
+            <tbody>
+              <!-- Dynamically render rows based on information pulled from database -->
+              <tr>
+                <td><a class="nav-link" href={% url "lastlistweb:itemid" i.item_id %}>{{ i.product.name }}</a></td>
+                <td>{{ i.product.brand }}</td>
+                <td>{{ i.price.price }}</td>
+                <td>{{ i.price.date_recorded }}</td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+        </div>
+      {% endif %}
       <div id="error">
         <p>Error Message Location</p>
       </div>

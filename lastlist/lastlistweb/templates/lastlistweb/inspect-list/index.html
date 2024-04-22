@@ -9,12 +9,12 @@
     <h1>Inspect List</h1>
 
     <div id="items">
+      {% if items %}
       <table id="items-table">
         <caption>
           A table displaying all items that a user has placed into the given
           list.
         </caption>
-
         <thead>
           <tr>
             <th>Product Name</th>
@@ -26,16 +26,24 @@
             <th>Date Recorded</th>
           </tr>
         </thead>
-
+        {% for i in items %}
         <tbody>
           <!-- Dynamically render rows based on information pulled from database -->
           <tr>
-            <td>foo</td>
-            <td>bar</td>
+            <td>{{i.item.product.name}}</td>
+            <td>{{i.item.product.brand}}</td>
+            <td>{{i.item.quantity.measurement}} {{i.quantity.unit}}</td>
+            <td>{{i.item.quantity.count}}</td>
+            <td>{{i.item.price.price}}</td>
+            <td>TBI</td>
+            <td>{{i.item.price.date_recorded}}</td>
           </tr>
         </tbody>
+        {% endfor %}
       </table>
-
+      {% else %}
+        <p>Hmm... This list is looking pretty empty</p>
+      {% endif %}
       <!-- Add pagination if time permits -->
     </div>
   </body>

@@ -8,12 +8,15 @@
     <h1>Vendor Search</h1>
     <div id="search">
       <div id="search-bar">
-        <form id="vendor-search-form" action="" method="POST">
-          <input type="text" name="search" placeholder="Enter search term" />
-          <button type="submit">Search</button>
+        <form id="vendor-search-form" action={% url "lastlistweb:vendors" %} method="POST">
+          {% csrf_token %}
+          <form>
+            <input type="text" name="search" placeholder="Enter search term" />
+            <button type="submit">Search</button>
+          </form>
         </form>
       </div>
-
+      {% if vendors %}
       <div id="results">
         <table id="results-table">
           <caption>
@@ -23,19 +26,21 @@
           <thead>
             <tr>
               <th>Vendor Name</th>
+              <th>Vendor Address</th>
             </tr>
           </thead>
-
+          {% for v in vendors %}
           <tbody>
             <!-- Dynamically render rows based on information pulled from database -->
             <tr>
-              <td>foo</td>
-              <td>bar</td>
+              <td>{{ v.name }}</td>
+              <td>{{ v.street_number }} {{ v.street_name }}</td>
             </tr>
           </tbody>
+          {% endfor %}
         </table>
       </div>
-
+      {% endif %}
       <div id="error">
         <p>Error Message Location</p>
       </div>

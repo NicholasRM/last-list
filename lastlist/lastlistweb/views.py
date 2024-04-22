@@ -92,3 +92,16 @@ def add_list_item(request, list_id, item_id):
     entry = Contains.objects.create(list=List.objects.get(pk=list_id), item=Item.objects.get(pk=item_id), is_replacement=0)
     entry.save()
     return redirect("lastlistweb:itemid", item_id=item_id)
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('lastlistweb:lists')
+    form = SignUpForm()
+    return render(request, 'lastlistweb/signup/index.html', {"form":form})

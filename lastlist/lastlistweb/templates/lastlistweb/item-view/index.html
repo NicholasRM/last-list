@@ -31,9 +31,9 @@
           </tr>
         </tbody>
       </table>
-      <h3>Add item to...  </h3>
+      <h3>Add item to... </h3>
       {% for l in lists %}
-        <a href={% url "lastlistweb:addlistitem" l.list_id item.item_id %}> {{ l.name }} </a>
+        <a class="nav-link" href={% url "lastlistweb:addlistitem" l.list_id item.item_id %}> {{ l.name }} </a>
         <br />
       {% endfor %}
     {% else %}

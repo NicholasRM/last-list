@@ -10,7 +10,7 @@
 
     <div id="search">
       <div id="search-bar">
-        <form id="item-search-form" action="/items/" method="POST">
+        <form id="item-search-form" action={% url "lastlistweb:items" %} method="POST">
           {% csrf_token %}
           <form>
             <input type="text" name="search" placeholder="Enter search term" />
@@ -38,7 +38,7 @@
             <tbody>
               <!-- Dynamically render rows based on information pulled from database -->
               <tr>
-                <td>{{ i.product.name }}</td>
+                <td><a href={% url "lastlistweb:itemid" i.item_id %}>{{ i.product.name }}</a></td>
                 <td>{{ i.product.brand }}</td>
                 <td>{{ i.price.price }}</td>
                 <td>{{ i.price.date_recorded }}</td>

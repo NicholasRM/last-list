@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import List, Contains, Item, Vendor, Stock
+from .models import List, Contains, Item, Vendor, Stock, AuthUser
 from django.contrib.auth import authenticate, login, logout
+from .forms import SignUpForm
 
 
 # Create your views here.
@@ -19,11 +20,20 @@ def signin(request):
 
 
 def list_view(request):
+    if not request.user.is_authenticated:
+        return redirect('lastlistweb:signin')
+    if request.method == "POST":
+        list_name = request.POST['list_name']
+        return redirect("lastlistweb:new-list", list_name=list_name)
     lists = List.objects.filter(user_id=request.user.id)
     return render(request, "lastlistweb/list-view/index.html", {'lists':lists})
 
 
 def inspect_list(request, list_id):
+    try:
+        _ = List.objects.get(user=request.user.id, list_id=list_id)
+    except:
+        return redirect('lastlistweb:lists')
     items = Contains.objects.filter(list=list_id)
     return render(request, "lastlistweb/inspect-list/index.html", {'items':items})
 
@@ -36,8 +46,15 @@ def item_search(request):
     return render(request, "lastlistweb/item-search/index.html")
 
 def item_view(request, item_id):
-    item = Item.objects.get(pk=item_id)
-    return render(request, "lastlistweb/item-view/index.html", {'item':item})
+    try:
+        item = Item.objects.get(pk=item_id)
+    except:
+        item = None
+    try:
+        lists = List.objects.filter(user=request.user.id)
+    except:
+        return redirect("lastlistweb:signin")
+    return render(request, "lastlistweb/item-view/index.html", {'item':item, 'lists':lists})
 
 
 def vendor_search(request):
@@ -49,7 +66,6 @@ def vendor_search(request):
 
 
 def vendor_view(request, vendor_id):
-    pass
     vendor = Vendor.objects.get(pk=vendor_id)
     inventory = Stock.objects.filter(vendor=vendor_id)
     return render(request, "lastlistweb/vendor-view/index.html", {'vendor': vendor, 'inventory': inventory})
@@ -57,3 +73,22 @@ def vendor_view(request, vendor_id):
 def signout(request):
     logout(request)
     return redirect("lastlistweb:signin")
+
+def add_list(request, list_name):
+    from datetime import datetime
+    if not request.user.is_authenticated:
+        return redirect("lastlistweb:signin")
+    list = List.objects.create(user=AuthUser.objects.get(id=request.user.id), name=list_name, date_created=datetime.now().date())
+    list.save()
+    return redirect("lastlistweb:lists")
+
+def add_list_item(request, list_id, item_id):
+    if not request.user.is_authenticated:
+        return redirect("lastlistweb:signin")
+    try:
+        List.objects.get(user=request.user.id, list_id=list_id)
+    except:
+        return redirect("lastlistweb:lists")
+    entry = Contains.objects.create(list=List.objects.get(pk=list_id), item=Item.objects.get(pk=item_id), is_replacement=0)
+    entry.save()
+    return redirect("lastlistweb:itemid", item_id=item_id)

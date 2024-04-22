@@ -10,6 +10,15 @@
     <h1>List View</h1>
 
     <div id="lists">
+      <div id="new-list">
+        <form id="new-list-name" action={% url "lastlistweb:lists" %} method="POST">
+          {% csrf_token %}
+          <form>
+            <input type="text" name="list_name" placeholder="Create a new list..." />
+            <button type="submit"> Create </button>
+          </form>
+        </form>
+      </div>
       <table id="lists-table">
         <caption>
           A table displaying all lists that a user has created.
@@ -24,7 +33,7 @@
         <tbody>
           <!-- Dynamically render rows based on information pulled from database -->
           <tr>
-            <td>{{ list.name }}</td>
+            <td><a href={% url "lastlistweb:listid" list.list_id %}>{{ list.name }}</a></td>
             <td>{{ list.date_created }}</td>
           </tr>
         </tbody>

@@ -177,7 +177,7 @@ class Price(models.Model):
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=256)
     brand = models.CharField(max_length=30)
 
     class Meta:

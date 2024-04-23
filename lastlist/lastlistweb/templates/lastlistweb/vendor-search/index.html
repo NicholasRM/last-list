@@ -42,10 +42,13 @@
         </table>
       </div>
       {% endif %}
+      {% if messages %}
       <div id="error">
-        <p>Error Message Location</p>
+        {% for m in messages %}
+        <p class="error-message"> {{m}} </p>
+        {% endfor %}
       </div>
-
+      {% endif %}
       <!-- Add pagination if time permits -->
     </div>
   </body>

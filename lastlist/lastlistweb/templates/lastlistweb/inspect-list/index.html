@@ -52,5 +52,12 @@
       {% endif %}
       <!-- Add pagination if time permits -->
     </div>
+    {% if messages %}
+    <div id="error">
+      {% for m in messages %}
+      <p class="error-message"> {{m}} </p>
+      {% endfor %}
+    </div>
+    {% endif %}
   </body>
 </html>

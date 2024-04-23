@@ -37,6 +37,13 @@
         </tbody>
         {% endfor %}
       </table>
+      {% if messages %}
+      <div id="error">
+        {% for m in messages %}
+        <p class="error-message"> {{m}} </p>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </body>
 </html>

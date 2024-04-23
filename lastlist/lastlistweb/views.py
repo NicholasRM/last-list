@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import List, Contains, Item, Vendor, Stock, AuthUser
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -14,6 +15,8 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+        else:
+            messages.success(request, "Something went wrong signing you in...")
         return redirect('lastlistweb:signin')
     else:
         return render(request, "lastlistweb/login/index.html")
@@ -42,8 +45,8 @@ def item_search(request):
         prod_name = request.POST['search']
         items = Item.objects.filter(product__name__icontains=prod_name)
         return render(request, "lastlistweb/item-search/index.html", {"items":items})
-        
-    return render(request, "lastlistweb/item-search/index.html")
+    items = Item.objects.all()
+    return render(request, "lastlistweb/item-search/index.html",{"items":items})
 
 def item_view(request, item_id):
     try:
@@ -62,7 +65,8 @@ def vendor_search(request):
         vend_name = request.POST['search']
         vendors = Vendor.objects.filter(name__icontains=vend_name)
         return render(request, "lastlistweb/vendor-search/index.html", {"vendors":vendors})
-    return render(request, "lastlistweb/vendor-search/index.html")
+    vendors = Vendor.objects.all()
+    return render(request, "lastlistweb/vendor-search/index.html", {"vendors":vendors})
 
 
 def vendor_view(request, vendor_id):
@@ -72,6 +76,7 @@ def vendor_view(request, vendor_id):
 
 def signout(request):
     logout(request)
+    messages.success(request, "Goodbye for now")
     return redirect("lastlistweb:signin")
 
 def add_list(request, list_name):

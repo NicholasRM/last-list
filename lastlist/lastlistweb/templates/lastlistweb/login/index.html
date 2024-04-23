@@ -10,10 +10,10 @@
   <body>
     {% if user.is_authenticated %}
     <nav class="navbar">
-      <a class="navbar-brand" href="#">Profile</a>
-      <a class="navbar-brand" href="#">Lists</a>
-      <a class="navbar-brand" href="#">Items</a>
-      <a class="navbar-brand" href="#">Vendors</a>
+      <a class="navbar-brand" href={% url "lastlistweb:signin" %}>Profile</a>
+      <a class="navbar-brand" href={% url "lastlistweb:lists" %}>Lists</a>
+      <a class="navbar-brand" href={% url "lastlistweb:items" %}>Items</a>
+      <a class="navbar-brand" href={% url "lastlistweb:vendors" %}>Vendors</a>
     </nav>
       <h1> Welcome, {{ user.first_name }}</h1>
       <button type="submit" id="signout-button" onclick="location.href='/signout'">
@@ -41,9 +41,13 @@
         Sign Up
       </button>
     {% endif %}
-      <div id="error">
-        <p>Error Message Location</p>
-      </div>
+    {% if messages %}
+    <div id="error">
+      {% for m in messages %}
+      <p class="error-message"> {{m}} </p>
+      {% endfor %}
+    </div>
+    {% endif %}
     </div>
   </body>
 </html>

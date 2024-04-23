@@ -41,5 +41,12 @@
       <p>Looks like that item doesn't exist yet...</p>
     {% endif %}
     </div>
+    {% if messages %}
+    <div id="error">
+      {% for m in messages %}
+      <p class="error-message"> {{m}} </p>
+      {% endfor %}
+    </div>
+    {% endif %}
   </body>
 </html>

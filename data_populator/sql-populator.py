@@ -166,9 +166,11 @@ Proceed?(y/n):""")
         populate_quantity(dicts["quantity"])
         populate_item(dicts["item"])
         populate_stock(dicts["stock"])
+        print("Queries sucessfully run, committing then closing connection")
+        CNX.commit()
+        CNX.close()
         print("####################")
         print("Population complete!")
         print("####################")
-        
 if __name__ == "__main__":
     main()

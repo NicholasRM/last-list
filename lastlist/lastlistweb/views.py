@@ -44,7 +44,7 @@ def item_search(request):
     if request.method == 'POST':
         prod_name = request.POST['search']
         items = Item.objects.filter(product__name__icontains=prod_name)
-        return render(request, "lastlistweb/item-search/index.html", {"items":items})
+        return render(request, "lastlistweb/item-search/index.html", {"items":items[:100]})
     items = Item.objects.all()
     return render(request, "lastlistweb/item-search/index.html",{"items":items[:100]})
 

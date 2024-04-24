@@ -131,12 +131,12 @@ def main():
         db_user = 'root'
         db_password = 'password123'
 
-        CNX = mysql.connector.connect(user=db_user, password=db_password,
-                              host=db_host,
-                              database=db_name,
-                              use_pure=False)
-        print("Connection successful.")
-        response = input(
+    CNX = mysql.connector.connect(user=db_user, password=db_password,
+                            host=db_host,
+                            database=db_name,
+                            use_pure=False)
+    print("Connection successful.")
+    response = input(
 """
 !!!WARNING!!!:
 This script will clear all existing data pertaining to
@@ -156,18 +156,21 @@ city
 
 
 Proceed?(y/n):""")
-        if response == "y" or response == "Y":
-            clear_tables()
-            print("Generating data. This will take a while")
-            dicts = package_all_data()
-            populate_vendor_and_city(dicts["city"], dicts["vendor"])
-            populate_product(dicts["product"])
-            populate_price(dicts["price"])
-            populate_quantity(dicts["quantity"])
-            populate_item(dicts["item"])
-            populate_stock(dicts["stock"])
-            print("####################")
-            print("Population complete!")
-            print("####################")
+    if response == "y" or response == "Y":
+        clear_tables()
+        print("Generating data. This will take a while")
+        dicts = package_all_data()
+        populate_vendor_and_city(dicts["city"], dicts["vendor"])
+        populate_product(dicts["product"])
+        populate_price(dicts["price"])
+        populate_quantity(dicts["quantity"])
+        populate_item(dicts["item"])
+        populate_stock(dicts["stock"])
+        print("Queries sucessfully run, committing then closing connection")
+        CNX.commit()
+        CNX.close()
+        print("####################")
+        print("Population complete!")
+        print("####################")
 if __name__ == "__main__":
     main()

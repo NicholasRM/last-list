@@ -44,9 +44,9 @@ def item_search(request):
     if request.method == 'POST':
         prod_name = request.POST['search']
         items = Item.objects.filter(product__name__icontains=prod_name)
-        return render(request, "lastlistweb/item-search/index.html", {"items":items})
+        return render(request, "lastlistweb/item-search/index.html", {"items":items[:100]})
     items = Item.objects.all()
-    return render(request, "lastlistweb/item-search/index.html",{"items":items})
+    return render(request, "lastlistweb/item-search/index.html",{"items":items[:100]})
 
 def item_view(request, item_id):
     try:
@@ -95,6 +95,12 @@ def add_list_item(request, list_id, item_id):
     except:
         return redirect("lastlistweb:lists")
     try:
+        c = Contains.objects.get(list=list_id, item=item_id)
+        messages.success(request, "This list already has that item")
+        redirect("lastlistweb:itemid", item_id=item_id)
+    except:
+        pass
+    try:
         entry = Contains.objects.create(list=List.objects.get(pk=list_id), item=Item.objects.get(pk=item_id), is_replacement=0)
     except:
         return redirect("lastlistweb:itemid", item_id=item_id)
@@ -102,7 +108,8 @@ def add_list_item(request, list_id, item_id):
         entry.save()
     except:
         pass
-    return redirect("lastlistweb:listid", list_id=list_id)
+    messages.success(request, "Item successfully added to list")
+    return redirect("lastlistweb:itemid", item_id=item_id)
 
 def signup(request):
     if request.method == 'POST':
@@ -113,7 +120,15 @@ def signup(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm-password']
         if not password == confirm_password and not (password and confirm_password):
+            messages.success(request, "Your passwords did not match...")
             return render(request, 'lastlistweb/signup/index.html')
+        try:
+            u = User.objects.get(username=username)
+            messages.success(request, "That username is already taken...")
+            redirect("lastlistweb:signin")
+        except:
+            pass
+        
         try:
             u = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
             u.save()

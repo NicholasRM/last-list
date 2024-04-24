@@ -4,13 +4,15 @@
   <head>
     <title>Login</title>
     <meta charset="utf-8" />
-    <link href="login.scss" rel="stylesheet">
+    {% load static %}
+    <link href={% static "login.css" %} rel="stylesheet">
   </head>
 
   <body>
     {% if user.is_authenticated %}
     <nav class="navbar">
         <div class="nav">
+          <h1 class="web-name">Last List</h1> 
       <a class="navbar-brand" href={% url "lastlistweb:signin" %}>Profile</a>
       <a class="navbar-brand" href={% url "lastlistweb:lists" %}>Lists</a>
       <a class="navbar-brand" href={% url "lastlistweb:items" %}>Items</a>
@@ -22,14 +24,14 @@
         Sign Out
       </button><br/>
           {% else %}
-    <h1>Last List Login</h1>
+    <h1>Last List</h1>
     <div id="login">
       <div id="text-entries">
         <form id="login-form" action={% url "lastlistweb:signin" %} method="POST">
           {% csrf_token %}
           <form>
-            <input type="text" name="username" placeholder="username" /><br/>
-            <input type="password" name="password" placeholder="password" /><br/>
+            <input type="text" name="username" placeholder="username" required/><br/>
+            <input type="password" name="password" placeholder="password" required/><br/>
 
             <button type="submit">Login</button>
           </form>

@@ -46,7 +46,7 @@ def item_search(request):
         items = Item.objects.filter(product__name__icontains=prod_name)
         return render(request, "lastlistweb/item-search/index.html", {"items":items})
     items = Item.objects.all()
-    return render(request, "lastlistweb/item-search/index.html",{"items":items})
+    return render(request, "lastlistweb/item-search/index.html",{"items":items[:100]})
 
 def item_view(request, item_id):
     try:

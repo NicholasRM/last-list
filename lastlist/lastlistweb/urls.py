@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name="lastlistweb"
 
@@ -15,4 +17,4 @@ urlpatterns = [
     path("vendors/<int:vendor_id>", views.vendor_view, name="vendorid"),
     path("lists/new-list/<str:list_name>", views.add_list, name="new-list"),
     path("lists/<int:list_id>/add/<int:item_id>", views.add_list_item, name="addlistitem")
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,96 @@
+div {
+    background-color: rgb(78, 78, 78);
+    padding: 10px;
+}
+
+a {
+    display: block;
+    padding: 10px;
+    background-color: rgb(78, 78, 78);
+    display: inline;
+    font-size: 24px;
+    font-family: monospace;
+}
+
+a:hover {
+    background-color: aliceblue;
+}
+
+a:visited {
+    color: rgb(130, 174, 255);
+}
+
+a:link {
+    color: rgb(130, 174, 255);
+}
+
+body {
+    background-color:dimgrey;
+}
+
+h1 {
+    font-family: monospace;
+    font-size: 36px;
+}
+
+button {
+    background-color: rgb(130, 174, 255);
+    color: aliceblue;
+    font-family: monospace;
+    font-size: 24px;
+    border: none;
+    border-radius: 12px;
+}
+
+button:hover {
+    color: rgb(130, 174, 255);
+    background-color: aliceblue;
+}
+
+button:active {
+    color: palevioletred;
+    background-color: aliceblue;
+}
+
+input {
+    font-size: 24px;
+    font-family: monospace;
+    border-radius: 12px;
+}
+
+.error-message {
+    color: palevioletred;
+    padding-bottom: 5px;
+    font-size: 24px;
+    font-family: monospace;
+}
+
+caption {
+    visibility: collapse;
+}
+
+td {
+    height: fit-content;
+}
+
+th {
+    color: rgb(130, 174, 255);
+    font-family: monospace;
+    font-size: 28px;
+    font-weight: bolder;
+}
+
+.list-element {
+    color: rgb(130, 174, 255);
+    font-family: monospace;
+    font-size: 20px;
+}
+
+.web-name {
+    color: rgb(130, 174, 255);
+    font-family: monospace;
+    font-size: 32px;
+    display: inline;
+    padding-right: 12px;
+    font-style: oblique;
+}

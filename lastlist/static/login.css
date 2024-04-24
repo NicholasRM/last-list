@@ -1,0 +1,14 @@
+div {
+    background-color: black;
+    max-height: 10%;
+    width: 100%;
+}
+
+a:hover {
+    background-color: aliceblue;
+}
+
+
+body {
+    background-color:dimgrey;
+}

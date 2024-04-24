@@ -37,11 +37,11 @@
         <tbody>
           <tr>
             <td> <a class="navlink" href={% url "lastlistweb:itemid" i.item.item_id %}> {{ i.item.product.name }} </a></td>
-            <td> {{ i.item.price.price }} </td>
+            <td> <p class="list-element">{{ i.item.price.price }} </p></td>
             {% if i.status %}
-            <td> Yes </td>
+            <td><p class="list-element"> Yes </p></td>
             {% else %}
-            <td> No </td>
+            <td><p class="list-element"> No </p></td>
             {% endif %}
           </tr>
         </tbody>

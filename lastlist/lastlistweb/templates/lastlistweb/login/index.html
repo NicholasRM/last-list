@@ -24,14 +24,14 @@
         Sign Out
       </button><br/>
           {% else %}
-    <h1>Last List Login</h1>
+    <h1>Last List</h1>
     <div id="login">
       <div id="text-entries">
         <form id="login-form" action={% url "lastlistweb:signin" %} method="POST">
           {% csrf_token %}
           <form>
-            <input type="text" name="username" placeholder="username" /><br/>
-            <input type="password" name="password" placeholder="password" /><br/>
+            <input type="text" name="username" placeholder="username" required/><br/>
+            <input type="password" name="password" placeholder="password" required/><br/>
 
             <button type="submit">Login</button>
           </form>

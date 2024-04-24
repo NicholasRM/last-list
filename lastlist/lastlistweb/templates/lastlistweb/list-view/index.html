@@ -25,7 +25,7 @@
         <form id="new-list-name" action={% url "lastlistweb:lists" %} method="POST">
           {% csrf_token %}
           <form>
-            <input type="text" name="list_name" placeholder="Create a new list..." />
+            <input type="text" name="list_name" placeholder="Create a new list..." required/>
             <button type="submit"> Create </button>
           </form>
         </form>

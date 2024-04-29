@@ -44,9 +44,9 @@ def item_search(request):
     if request.method == 'POST':
         prod_name = request.POST['search']
         items = Item.objects.filter(product__name__icontains=prod_name)
-        return render(request, "lastlistweb/item-search/index.html", {"items":items[:100]})
+        return render(request, "lastlistweb/item-search/index.html", {"items":items.order_by("price")[:30]})
     items = Item.objects.all()
-    return render(request, "lastlistweb/item-search/index.html",{"items":items[:100]})
+    return render(request, "lastlistweb/item-search/index.html",{"items":items.order_by("price")[:30]})
 
 def item_view(request, item_id):
     try:
@@ -72,7 +72,7 @@ def vendor_search(request):
 def vendor_view(request, vendor_id):
     vendor = Vendor.objects.get(pk=vendor_id)
     inventory = Stock.objects.filter(vendor=vendor_id)
-    return render(request, "lastlistweb/vendor-view/index.html", {'vendor': vendor, 'inventory': inventory})
+    return render(request, "lastlistweb/vendor-view/index.html", {'vendor': vendor, 'inventory': inventory.order_by("item")[:30]})
 
 def signout(request):
     logout(request)
@@ -122,12 +122,9 @@ def signup(request):
         if not password == confirm_password and not (password and confirm_password):
             messages.success(request, "Your passwords did not match...")
             return render(request, 'lastlistweb/signup/index.html')
-        try:
-            u = User.objects.get(username=username)
+        if User.objects.filter(username=username).exists():
             messages.success(request, "That username is already taken...")
-            redirect("lastlistweb:signin")
-        except:
-            pass
+            return redirect("lastlistweb:signin")
         
         try:
             u = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)

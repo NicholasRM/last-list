@@ -69,8 +69,13 @@ caption {
     visibility: collapse;
 }
 
+table {
+    border-spacing: 16px;
+}
+
 td {
     height: fit-content;
+    text-align: left;
 }
 
 th {
@@ -78,6 +83,7 @@ th {
     font-family: monospace;
     font-size: 28px;
     font-weight: bolder;
+    text-align: center;
 }
 
 .list-element {

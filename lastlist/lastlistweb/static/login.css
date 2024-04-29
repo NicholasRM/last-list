@@ -10,6 +10,7 @@ a {
     display: inline;
     font-size: 24px;
     font-family: monospace;
+    font-style: oblique;
 }
 
 a:hover {
@@ -81,7 +82,7 @@ td {
 th {
     color: rgb(130, 174, 255);
     font-family: monospace;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bolder;
     text-align: center;
 }
@@ -89,7 +90,7 @@ th {
 .list-element {
     color: rgb(130, 174, 255);
     font-family: monospace;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .web-name {

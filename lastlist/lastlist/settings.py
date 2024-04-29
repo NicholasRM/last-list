@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['last-list.onrender.com']
 
-CSRF_TRUSTED_ORIGINS = ['last-list.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://last-list.onrender.com']
 
 
 # Application definition

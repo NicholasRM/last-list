@@ -39,5 +39,4 @@ threadpoolctl==3.3.0
 tk==0.1.0
 tzdata==2023.3
 uvicorn==0.29.0
-vboxapi==1.0
 webencodings==0.5.1

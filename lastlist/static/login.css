@@ -30,6 +30,10 @@ h1 {
     font-size: 36px;
 }
 
+body {
+    background-color:dimgrey;
+}
+
 button {
     background-color: rgb(130, 174, 255);
     color: aliceblue;
